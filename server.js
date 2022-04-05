@@ -18,10 +18,11 @@ const session = require("express-session");
 const connectRedis = require("connect-redis");
 
 const setCurrentUser = require("./middlewares/setCurrentUser.middleware");
-const isLoggedIn = require("./middlewares/isLoggedIn.middleware");
+const isUserLoggedIn = require("./middlewares/isUserLoggedIn.middleware");
 const logRequest = require("./middlewares/logRequest.middleware");
 
-const loginRouter = require("./routes/login.routes");
+const adminRouter = require("./routes/admin.routes");
+const userRouter = require("./routes/user.routes");
 const dashboardRouter = require("./routes/dashboard.routes");
 
 const app = express();
@@ -40,7 +41,7 @@ const SETUP = {
         password: process.env.REDIS_PASSWORD,
     },
     cookie: {
-        name: process.env.COOKIE_NAME || "sid.connect",
+        name: process.env.COOKIE_NAME || "connect.sid",
         secret: process.env.SESSION_SECRET || ""
     },
     dbURL: process.env.DB_URL || "mongodb://localhost:27017/3equilibrium"
@@ -94,7 +95,7 @@ app.use(
         cookie: {
             secure: "auto",
             httpOnly: true,
-            maxAge: 86400000 + new Date() - new Date().setHours(0, 0, 0, 0), //* setting expiry on the current date
+            maxAge: 86400000 + +new Date() - +new Date().setHours(0, 0, 0, 0), //* setting expiry on the current date
         },
     })
 );
@@ -102,15 +103,16 @@ app.use(
 app.use(logRequest);
 app.use(setCurrentUser);
 
-app.use("/api/login", loginRouter);
-app.use("/api/dashboard", isLoggedIn, dashboardRouter);
+app.use("/user/api", userRouter);
+app.use("/admin/api", adminRouter);
+app.use("/dashboard/api", isUserLoggedIn, dashboardRouter);
 // app.use("/api/meditation", isLoggedIn, meditationRouter);
 // app.use("/api/entertainment", isLoggedIn, entertainmentRouter);
 
 app.use("/", express.static(path.join(__dirname, "assets")));
 
 app.get("/", (req, res) => {
-    return res.send(`OK`);
+    return res.redirect("./login/");
 });
 
 const server = app.listen(SETUP.port, SETUP.ip, () => {

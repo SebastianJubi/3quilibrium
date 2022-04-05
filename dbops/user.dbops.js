@@ -1,4 +1,4 @@
-const Appuser = require("../models/appuser.models");
+const Appuser = require("../models/user.models");
 
 module.exports = {
     addAppuser: (appuser) => {
@@ -23,7 +23,8 @@ module.exports = {
     getAllAppusers: () => {
         return new Promise((resolve, reject) => {
             try {
-                Appuser.find({}, null, {})
+                Appuser.find({ "tags.role": "user" }, null, {})
+                    .sort({ _id: -1 })
                     .lean()
                     .exec((err, users) => {
                         // console.log(users)
@@ -91,6 +92,25 @@ module.exports = {
             try {
                 console.log("Delete " + companyid);
                 Appuser.deleteMany({ companyid: companyid })
+                    .then(() => {
+                        console.log("Data deleted");
+                        return resolve("success");
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        return reject(error);
+                    });
+            } catch (err) {
+                console.log(err);
+                return reject(err);
+            }
+        })
+    },
+    deleteAppuserByOptions: (options) => {
+        return new Promise((resolve, reject) => {
+            try {
+                console.log("Delete", options);
+                Appuser.deleteOne(options)
                     .then(() => {
                         console.log("Data deleted");
                         return resolve("success");
