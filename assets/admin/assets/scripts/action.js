@@ -4,7 +4,7 @@ $(document).ready(function () {
 });
 
 const makeRequest = (reqUri, reqMethod, options = {}) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         try {
             $.ajax({
                 async: true,
@@ -41,7 +41,7 @@ const makeRequest = (reqUri, reqMethod, options = {}) => {
 }
 
 //* Login Page */
-const verifyUser = async () => {
+const verifyUser = () => {
     const render = () => {
         document.getElementById("app-loader-3quilibrium").innerHTML = `
         <section class="login-page">

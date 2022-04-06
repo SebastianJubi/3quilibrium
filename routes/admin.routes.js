@@ -7,6 +7,8 @@ const router = express.Router();
 const userDbService = require("../dbops/user.dbops");
 const userDbModel = require("../models/user.models");
 
+const cronService = require("../services/cron");
+
 const isAdminLoggedIn = (req, res, next) => {
     if (!req.user || (req.user.tags && req.user.tags.role !== "admin")) {
         return res.redirect(`${process.env.BASE_URL}/admin/`);
@@ -89,7 +91,7 @@ router.get("/logout", isAdminLoggedIn, (req, res) => {
     return res.status(200).send({ status: true, message: "logout successful", data: "logout successful" });
 });
 
-router.get("/getUsernames", isAdminLoggedIn, async (req, res) => {
+router.get("/usernames", isAdminLoggedIn, async (req, res) => {
     try {
         const userResp = await userDbService.getAllAppusers();
         if (userResp && userResp.length > 0) {
@@ -177,6 +179,7 @@ router.patch("/settings", isAdminLoggedIn, async (req, res) => {
                 `./models/settings.json`,
                 JSON.stringify(settings)
             );
+            cronService.restartCrons(settings);
             return res
                 .status(200)
                 .send({ status: true, message: "Settings updated", data: settings });
@@ -192,7 +195,7 @@ router.patch("/settings", isAdminLoggedIn, async (req, res) => {
 
 function generateAccessToken(id) {
     try {
-        return jwt.sign(id, process.env.SESSION_SECRET, { expiresIn: String(86400000 + +new Date() - +new Date().setHours(0, 0, 0, 0)) });
+        return jwt.sign(id, process.env.SESSION_SECRET, { expiresIn: String(86400000 - (+new Date() - +new Date().setHours(0, 0, 0, 0))) });
     } catch (e) {
         console.log("jwt error", e.message);
         return null;

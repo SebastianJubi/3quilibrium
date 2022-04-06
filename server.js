@@ -22,8 +22,12 @@ const isUserLoggedIn = require("./middlewares/isUserLoggedIn.middleware");
 const logRequest = require("./middlewares/logRequest.middleware");
 
 const adminRouter = require("./routes/admin.routes");
-const userRouter = require("./routes/user.routes");
+const userRouter = require("./routes/login.routes");
 const dashboardRouter = require("./routes/dashboard.routes");
+const chatRouter = require("./routes/chat.routes");
+const reminderRouter = require("./routes/reminder.routes");
+
+const socketService = require("./services/socket.io");
 
 const app = express();
 const RedisStore = connectRedis(session);
@@ -95,7 +99,7 @@ app.use(
         cookie: {
             secure: "auto",
             httpOnly: true,
-            maxAge: 86400000 + +new Date() - +new Date().setHours(0, 0, 0, 0), //* setting expiry on the current date
+            maxAge: 86400000 - (+new Date() - +new Date().setHours(0, 0, 0, 0)), //* setting expiry on the current date
         },
     })
 );
@@ -103,9 +107,11 @@ app.use(
 app.use(logRequest);
 app.use(setCurrentUser);
 
-app.use("/user/api", userRouter);
 app.use("/admin/api", adminRouter);
+app.use("/user/api", userRouter);
 app.use("/dashboard/api", isUserLoggedIn, dashboardRouter);
+app.use("/chat/api", isUserLoggedIn, chatRouter);
+app.use("/reminder/api", isUserLoggedIn, reminderRouter);
 // app.use("/api/meditation", isLoggedIn, meditationRouter);
 // app.use("/api/entertainment", isLoggedIn, entertainmentRouter);
 
@@ -117,4 +123,39 @@ app.get("/", (req, res) => {
 
 const server = app.listen(SETUP.port, SETUP.ip, () => {
     console.log(`Server started on ${SETUP.ip}:${SETUP.port}`);
+});
+
+/* SOCKET.IO */
+const { Server } = require("socket.io");
+global.io = new Server(server, {
+    path: "/socket"
+});
+socketService.init();
+
+app.get("/broadcast", (req, res) => {
+    try {
+        console.log("/socket called");
+        socketService.emit("data", { type: "broadcast", name: "test", message: "123" });
+        return res
+            .status(200)
+            .send({ status: true, message: "ok", appUser: req.session.appUser });
+
+    } catch (e) {
+        console.log(e);
+        return res.status(500).send(e);
+    }
+});
+
+app.get("/chat/:username", (req, res) => {
+    try {
+        console.log(`/socket/${req.params.username} called`);
+        socketService.emit("data", { type: "chat", name: "test", message: "123" }, req.params.username);
+        return res
+            .status(200)
+            .send({ status: true, message: "ok", appUser: req.session.appUser });
+
+    } catch (e) {
+        console.log(e);
+        return res.status(500).send(e);
+    }
 });

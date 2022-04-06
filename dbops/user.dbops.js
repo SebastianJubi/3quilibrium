@@ -8,8 +8,8 @@ module.exports = {
                     delete appuser._id;
                 }
                 appuser.save((err, msg) => {
-                    console.log(err);
                     if (err) {
+                        console.log(err);
                         return reject(err);
                     }
                     return resolve(msg);
@@ -29,6 +29,7 @@ module.exports = {
                     .exec((err, users) => {
                         // console.log(users)
                         if (err) {
+                            console.log(err);
                             return reject(err);
                         }
                         return resolve(users);
@@ -46,7 +47,10 @@ module.exports = {
                 Appuser.find(options)
                     .lean()
                     .exec((err, data) => {
-                        console.log("resolve before" + err);
+                        if (err) {
+                            console.log(err);
+                            return reject(err);
+                        }
                         // console.log(data)
                         if (!data || (data && data.length <= 0)) {
                             return resolve(null);
@@ -73,7 +77,10 @@ module.exports = {
                 Appuser.findOneAndUpdate({ domain: model.domain }, model, { new: true })
                     .lean()
                     .exec((err, data) => {
-                        console.log("resolve before findOneAndUpdate" + err);
+                        if (err) {
+                            console.log(err);
+                            return reject(err);
+                        }
                         // console.log(data);
                         if (!data || (data && data.length <= 0)) {
                             return resolve(err);

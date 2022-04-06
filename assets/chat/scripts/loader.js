@@ -115,10 +115,11 @@ document.getElementById("app-loader-3quilibrium").innerHTML = `
 
 loadCss({
     font: "https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap",
-    style: "./assets/styles/style.css",
+    style: "./styles/style.css",
 });
 
 loadJs({
     jquery: "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js",
-    script: "./assets/scripts/action.js",
+    socketio: "https://cdn.socket.io/4.4.1/socket.io.min.js",
+    script: "./scripts/action.js",
 });

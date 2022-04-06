@@ -108,7 +108,7 @@ async function loadCss(e) {
 document.getElementById("app-loader-3quilibrium").innerHTML = `
 <div id="loading" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;z-index: 3;">
     <div style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
-        <img src="../assets/medias/loading.gif" width="200px" />
+        <img src="../../shared/medias/loading.gif" width="200px" />
     </div>
 </div>
 `;

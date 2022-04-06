@@ -90,7 +90,7 @@ router.get("/logout", isUserLoggedIn, (req, res) => {
 
 function generateAccessToken(id) {
     try {
-        return jwt.sign(id, process.env.SESSION_SECRET, { expiresIn: String(86400000 + +new Date() - +new Date().setHours(0, 0, 0, 0)) });
+        return jwt.sign(id, process.env.SESSION_SECRET, { expiresIn: String(86400000 - (+new Date() - +new Date().setHours(0, 0, 0, 0))) });
     } catch (e) {
         console.log("jwt error", e.message);
         return null;

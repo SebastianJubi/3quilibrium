@@ -4,7 +4,7 @@ $(document).ready(function () {
 });
 
 const makeRequest = (reqUri, reqMethod, options = {}) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise((resolve, reject) => {
         try {
             $.ajax({
                 async: true,
@@ -41,7 +41,7 @@ const makeRequest = (reqUri, reqMethod, options = {}) => {
 }
 
 //* Login Page */
-const verifyUser = async () => {
+const verifyUser = () => {
     //TODO: verify session
     const verifySession = () => {
         console.log("verify session");
@@ -117,7 +117,7 @@ const userManagement = () => {
         console.log("get usernames");
         return new Promise((resolve, reject) => {
             try {
-                makeRequest(`${BASE_URL}/admin/api/getUsernames`, "GET")
+                makeRequest(`${BASE_URL}/admin/api/usernames`, "GET")
                     .then((response) => {
                         if (response && response.status) {
                             return resolve(response.data);
