@@ -5,7 +5,7 @@ const reminderDbService = require("../dbops/reminder.dbops");
 const settings = require("../models/settings.json");
 
 const crons = [];
-const minutes = +settings.open.split(":")[1];
+const minutes = +settings.office.start.split(":")[1];
 
 var waterBreakJob = new CronJob(`${minutes} * * * *`, function () {
     console.log('water break');
@@ -53,7 +53,7 @@ let reminderJob = new CronJob(`* * * * *`, async function () {
         console.log("reminders", reminders);
         if (reminders && reminders.length > 0) {
             reminders.forEach(reminder => {
-                socketService.emit("notify", { type: "reminder", message: "reminder received", data: reminder }, reminder.username)
+                socketService.emit("notify", { type: "reminder", message: "reminder received", data: reminder }, reminder.username);
             });
         }
     } catch (e) {
@@ -62,18 +62,91 @@ let reminderJob = new CronJob(`* * * * *`, async function () {
 }, null, true, 'Asia/Kolkata');
 reminderJob.start();
 
+/* LUNCH BREAK CRON */
+// START
+const lunchTimeHourStart = settings.lunch.start.split(":")[0];
+const lunchTimeMinStart = settings.lunch.start.split(":")[1];
+let lunchBreakStartJob = new CronJob(`${lunchTimeMinStart} ${lunchTimeHourStart} * * *`, async function () {
+    try {
+        console.log("lunchBreakStartCron");
+        socketService.emit("notify", { type: "broadcast", message: "lunch break start" });
+    } catch (e) {
+        console.log(e);
+    }
+}, null, true, 'Asia/Kolkata');
+lunchBreakStartJob.start();
+// END
+const lunchTimeHourEnd = settings.lunch.end.split(":")[0];
+const lunchTimeMinEnd = settings.lunch.end.split(":")[1];
+let lunchBreakEndJob = new CronJob(`${lunchTimeMinEnd} ${lunchTimeHourEnd} * * *`, async function () {
+    try {
+        console.log("lunchBreakEndCron");
+        socketService.emit("notify", { type: "broadcast", message: "lunch break end" });
+    } catch (e) {
+        console.log(e);
+    }
+}, null, true, 'Asia/Kolkata');
+lunchBreakEndJob.start();
+
+/* SNACKS BREAK CRON */
+// START
+const snacksTimeHourStart = settings.snacks.start.split(":")[0];
+const snacksTimeMinStart = settings.snacks.start.split(":")[1];
+let snacksBreakStartJob = new CronJob(`${snacksTimeMinStart} ${snacksTimeHourStart} * * *`, async function () {
+    try {
+        console.log("snacksBreakStartCron");
+        socketService.emit("notify", { type: "broadcast", message: "snacks break start" });
+    } catch (e) {
+        console.log(e);
+    }
+}, null, true, 'Asia/Kolkata');
+snacksBreakStartJob.start();
+// END
+const snacksTimeHourEnd = settings.snacks.end.split(":")[0];
+const snacksTimeMinEnd = settings.snacks.end.split(":")[1];
+let snacksBreakEndJob = new CronJob(`${snacksTimeMinEnd} ${snacksTimeHourEnd} * * *`, async function () {
+    try {
+        console.log("snacksBreakEndCron");
+        socketService.emit("notify", { type: "broadcast", message: "snacks break end" });
+    } catch (e) {
+        console.log(e);
+    }
+}, null, true, 'Asia/Kolkata');
+snacksBreakEndJob.start();
+
 module.exports = {
     restartCrons: (settings) => {
         try {
             console.log("restart crons");
-            let min = +settings.open.split(":")[1];
+            let officeMin = +settings.office.start.split(":")[1];
             crons.forEach(obj => {
                 const timeFormula = obj.time.match(/(?<={)(.*)(?=})/)[0];
-                const newTime = obj.time.replace(`{${timeFormula}}`, eval(timeFormula.replace("min", min)));
+                const newTime = obj.time.replace(`{${timeFormula}}`, eval(timeFormula.replace("min", officeMin)));
                 console.log({ timeFormula, newTime });
                 obj.job.setTime(new CronTime(newTime));
                 obj.job.start();
             });
+            let hr = settings.lunch.start.split(":")[0];
+            let min = settings.lunch.start.split(":")[1];
+            // lunch start
+            lunchBreakStartJob.setTime(new CronTime(`${min} ${hr} * * *`));
+            lunchBreakStartJob.start();
+            // lunch end
+            hr = settings.lunch.end.split(":")[0];
+            min = settings.lunch.end.split(":")[1];
+            lunchBreakEndJob.setTime(new CronTime(`${min} ${hr} * * *`));
+            lunchBreakEndJob.start();
+            // snacks start
+            hr = settings.snacks.start.split(":")[0];
+            min = settings.snacks.start.split(":")[1];
+            snacksBreakStartJob.setTime(new CronTime(`${min} ${hr} * * *`));
+            snacksBreakStartJob.start();
+            // snacks end
+            hr = settings.snacks.end.split(":")[0];
+            min = settings.snacks.end.split(":")[1];
+            snacksBreakEndJob.setTime(new CronTime(`${min} ${hr} * * *`));
+            snacksBreakEndJob.start();
+
         } catch (e) {
             console.log(e);
         }

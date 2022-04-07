@@ -74,7 +74,7 @@ module.exports = {
                 if ("_id" in model) {
                     delete model._id;
                 }
-                Appuser.findOneAndUpdate({ domain: model.domain }, model, { new: true })
+                Appuser.findOneAndUpdate({ username: model.username }, model, { new: true })
                     .lean()
                     .exec((err, data) => {
                         if (err) {
@@ -83,7 +83,7 @@ module.exports = {
                         }
                         // console.log(data);
                         if (!data || (data && data.length <= 0)) {
-                            return resolve(err);
+                            return resolve(null);
                         }
                         console.log("resolve updated data", data);
                         return resolve(data);

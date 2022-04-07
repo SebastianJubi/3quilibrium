@@ -169,12 +169,8 @@ router.get("/settings", isAdminLoggedIn, async (req, res) => {
 
 router.patch("/settings", isAdminLoggedIn, async (req, res) => {
     try {
-        if (req.body && req.body.open && req.body.close && req.body.meditation) {
-            const settings = {
-                open: req.body.open,
-                close: req.body.close,
-                meditation: req.body.meditation
-            };
+        if (req.body && req.body.office && req.body.lunch && req.body.snacks && req.body.meditation) {
+            const settings = req.body;
             fs.writeFileSync(
                 `./models/settings.json`,
                 JSON.stringify(settings)

@@ -1,10 +1,10 @@
 "use strict";
+const fs = require("fs");
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 const userDbService = require("../dbops/user.dbops");
-const userDbModel = require("../models/user.models");
 
 const isUserLoggedIn = (req, res, next) => {
     if (!req.user || (req.user.tags && req.user.tags.role !== "user")) {
@@ -26,19 +26,21 @@ router.post("/login", async (req, res) => {
             // on success
             if (userResp) {
                 const token = generateAccessToken({ id: userResp.username });
+                const settings = JSON.parse(fs.readFileSync(`./models/settings.json`));
                 return res
                     .status(200)
                     .send({
                         status: true,
                         message: "Login successful",
                         data: userResp,
+                        settings,
                         token
                     });
             }
             // on failure
             return res
                 .status(404)
-                .send({ status: false, message: "User not found", data: null });
+                .send({ status: false, message: "User not found", userMessage: "Username or Password incorrect", data: null });
         }
         return res
             .status(400)
@@ -63,13 +65,15 @@ router.post("/createSession", (req, res) => {
     }
 });
 
-router.get("/verifySession", isUserLoggedIn, (req, res) => {
+router.get("/verifySession", isUserLoggedIn, async (req, res) => {
     try {
         console.log("/verifySession called", req.session);
         if (req.session && req.session.appUser && req.session.token) {
+            const appUser = await userDbService.getAppuserByOptions({ username: req.session.appUser.username });
+            const settings = JSON.parse(fs.readFileSync(`./models/settings.json`));
             return res
                 .status(200)
-                .send({ status: true, message: "ok", appUser: req.session.appUser });
+                .send({ status: true, message: "ok", appUser, settings });
         } else {
             return res
                 .status(403)

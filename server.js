@@ -26,6 +26,9 @@ const userRouter = require("./routes/login.routes");
 const dashboardRouter = require("./routes/dashboard.routes");
 const chatRouter = require("./routes/chat.routes");
 const reminderRouter = require("./routes/reminder.routes");
+const meditationRouter = require("./routes/meditation.routes");
+const musicRouter = require("./routes/music.routes");
+const gameRouter = require("./routes/game.routes");
 
 const socketService = require("./services/socket.io");
 
@@ -112,10 +115,11 @@ app.use("/user/api", userRouter);
 app.use("/dashboard/api", isUserLoggedIn, dashboardRouter);
 app.use("/chat/api", isUserLoggedIn, chatRouter);
 app.use("/reminder/api", isUserLoggedIn, reminderRouter);
-// app.use("/api/meditation", isLoggedIn, meditationRouter);
-// app.use("/api/entertainment", isLoggedIn, entertainmentRouter);
+app.use("/meditation/api", isUserLoggedIn, meditationRouter);
+app.use("/music/api", isUserLoggedIn, musicRouter);
+app.use("/game/api", isUserLoggedIn, gameRouter);
 
-app.use("/", express.static(path.join(__dirname, "assets")));
+app.use("/", express.static(path.join(__dirname, "pages")));
 
 app.get("/", (req, res) => {
     return res.redirect("./login/");
@@ -131,31 +135,3 @@ global.io = new Server(server, {
     path: "/socket"
 });
 socketService.init();
-
-app.get("/broadcast", (req, res) => {
-    try {
-        console.log("/socket called");
-        socketService.emit("data", { type: "broadcast", name: "test", message: "123" });
-        return res
-            .status(200)
-            .send({ status: true, message: "ok", appUser: req.session.appUser });
-
-    } catch (e) {
-        console.log(e);
-        return res.status(500).send(e);
-    }
-});
-
-app.get("/chat/:username", (req, res) => {
-    try {
-        console.log(`/socket/${req.params.username} called`);
-        socketService.emit("data", { type: "chat", name: "test", message: "123" }, req.params.username);
-        return res
-            .status(200)
-            .send({ status: true, message: "ok", appUser: req.session.appUser });
-
-    } catch (e) {
-        console.log(e);
-        return res.status(500).send(e);
-    }
-});

@@ -1,1 +1,15 @@
-{"open":"10:05","close":"18:00","meditation":true}
+{
+    "office": {
+        "start": "08:00",
+        "end": "20:00"
+    },
+    "lunch": {
+        "start": "14:00",
+        "end": "15:00"
+    },
+    "snacks": {
+        "start": "18:00",
+        "end": "18:30"
+    },
+    "meditation": true
+}
