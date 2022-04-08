@@ -2,15 +2,18 @@
 const express = require("express");
 const router = express.Router();
 
+const utilService = require("../services/utils");
+
 router.get("/material", async (req, res) => {
     try {
         console.log(`/material called`);
         const gameResp = require(`../models/game.json`);
-        const today = new Date().getDay();
-        if (gameResp && gameResp[today]) {
+        const numGames = Object.keys(gameResp).length;
+        const selectedKey = utilService.getRandomInt(0, numGames + 1); // range includes 0 and numGames
+        if (gameResp && gameResp[selectedKey]) {
             return res
                 .status(200)
-                .send({ status: true, message: "Games found", data: gameResp[today] });
+                .send({ status: true, message: "Games found", data: gameResp[selectedKey] });
         }
         return res
             .status(404)

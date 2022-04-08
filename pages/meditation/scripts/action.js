@@ -38,7 +38,7 @@ const makeRequest = (reqUri, reqMethod, options = {}) => {
       return reject(err);
     }
   });
-}
+};
 
 //* Login Page */
 const verifyUser = async () => {
@@ -50,9 +50,14 @@ const verifyUser = async () => {
         if (response && response.status) {
           console.log("user logged in");
           if (
-            response.settings && response.settings.meditation &&
-            response.appUser && response.appUser.tags && typeof response.appUser.tags.lastMeditationTime === "number" &&
-            (response.appUser.tags.lastMeditationTime < +new Date().setHours(0, 0, 0, 0))) {
+            response.settings &&
+            response.settings.meditation &&
+            response.appUser &&
+            response.appUser.tags &&
+            typeof response.appUser.tags.lastMeditationTime === "number" &&
+            response.appUser.tags.lastMeditationTime <
+            +new Date().setHours(0, 0, 0, 0)
+          ) {
             location.href = "../peace-of-mind/";
           } else {
             window.username = response.appUser.username;
@@ -70,13 +75,13 @@ const verifyUser = async () => {
   };
 
   const listenNotifications = () => {
-    let script = document.createElement('script');
+    let script = document.createElement("script");
     script.onload = function () {
       console.log("listening for notifications");
     };
     script.src = "../shared/scripts/socket.io.js";
     document.head.appendChild(script);
-  }
+  };
 
   verifySession();
 };
@@ -84,18 +89,33 @@ const verifyUser = async () => {
 const meditation = () => {
   const render = (urls) => {
     document.getElementById("app-loader-3quilibrium").innerHTML = `
-      <section class="meditation-page">
+      <header>
+          <div class="logo">
+            <img src="../shared/medias/innovaccer.png" />
+          </div>
+          <div class="options">
+            <button id="logout">Logout</button>
+          </div>
+      </header>
+      <section class="meditation-page app-main">
         <section class="contents">
-          ${urls.map((url) => `
+          ${urls
+        .map(
+          (url) => `
           <div class="frame">
             <iframe id="ytplayer" type="text/html" width="640" height="360"
               src="${url}?enablejsapi=1&version=3&playerapiid=ytplayer&autoplay=0&showinfo=0&controls=1&modestbranding=1&rel=1" 
               frameborder="0"allowfullscreen >
             </iframe>
-          </div>`).join("")}
+          </div>`
+        )
+        .join("")}
         </section>
-      </section>`;
-  }
+      </section>
+      <footer>
+          Powered by <span class="cologo"><img src="../shared/medias/3quilibrium.png" /></span>
+      </footer>`;
+  };
 
   const getMeditationContent = () => {
     console.log("get meditation");
@@ -111,7 +131,7 @@ const meditation = () => {
       .catch((e) => {
         console.error(e);
       });
-  }
+  };
 
   window.sendChat = (data) => {
     $("#app-loader-3quilibrium").append(`
@@ -119,9 +139,30 @@ const meditation = () => {
           <div class="message">
             <pre>${JSON.stringify(data, null, 2)}</pre>
           </div>
-          <button onclick="$(this).parent().remove();">CLOSE</button>
+          <button onclick="$(this).parent().remove();">X</button>
         </section>`);
-  }
+  };
 
   getMeditationContent();
-}
+
+  //TODO: destroy session
+  const destroySession = () => {
+    console.log("destroy session");
+    makeRequest(`${BASE_URL}/user/api/logout`, "GET")
+      .then((response) => {
+        if (response && response.status) {
+          console.log("user logged out");
+          location.href = "../login/";
+        } else {
+          console.log("user NOT logged out");
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
+  $(document).on("click", "#app-loader-3quilibrium header .options #logout", () => {
+    destroySession();
+  });
+};

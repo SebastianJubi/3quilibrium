@@ -1,0 +1,129 @@
+body {
+  margin: 0;
+  background: #3a3a3a;
+  overflow: hidden;
+  font-family: "Roboto", "Open Sans", Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  -o-box-sizing: border-box;
+}
+
+img {
+  /* width: 100%; */
+  height: 100%;
+}
+
+button {
+  background: var(--color-theme-button-primary, #555);
+  color: var(--color-theme-text-secondary, #fff);
+  border: 0;
+  padding: 8px 16px;
+  border-radius: 50px;
+  height: fit-content;
+  cursor: pointer;
+}
+
+button:hover {
+  background: var(--color-theme-button-secondary, #000);
+}
+
+button + button {
+  margin-left: 10px;
+}
+
+body > #app-loader-3quilibrium {
+  background: #fff;
+  max-width: 767px;
+  margin: auto;
+  color: var(--color-theme-text-primary, #000);
+}
+
+body > #app-loader-3quilibrium > header {
+  height: 10vh;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 1px 2px 4px #cecece;
+}
+
+body > #app-loader-3quilibrium > header > .logo {
+  height: 100%;
+  width: min-content;
+}
+
+body > #app-loader-3quilibrium > .app-main {
+  height: 80vh;
+  padding: 20px;
+}
+
+body > #app-loader-3quilibrium > footer {
+  height: 10vh;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.3em;
+}
+
+body > #app-loader-3quilibrium > footer > .cologo {
+  height: 100%;
+  margin-left: 10px;
+}
+
+body > .popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: #5559;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body > .popup > .content {
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 2px #fff;
+}
+
+body > #app-loader-3quilibrium > .popup {
+  position: fixed;
+  bottom: 0;
+  margin: 20px;
+  padding: 20px;
+  background: var(--color-theme-button-primary, #555);
+  color: var(--color-theme-text-secondary, #fff);
+  border-radius: 10px;
+  box-shadow: 2px 3px 6px #000;
+}
+
+body > #app-loader-3quilibrium > .popup > button {
+  position: absolute;
+  right: 0;
+  top: 0;
+  transform: translate(50%, -50%);
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #fff;
+  font-weight: bolder;
+}
+
+/*
+<section class="popup">
+  <div class="message">
+    <pre>{ "type": "broadcast", "message": "work break" }</pre>
+  </div>
+  <button onclick="$(this).parent().remove();sound.pause();sound.currentTime=0;">X</button>
+</section>
+ */

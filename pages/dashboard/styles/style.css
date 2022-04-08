@@ -1,0 +1,128 @@
+body #app-loader-3quilibrium .dashboard-page .dashboard-content h3 {
+  font-size: 2em;
+}
+
+body #app-loader-3quilibrium .dashboard-page .dashboard-content .content {
+  margin-bottom: 40px;
+}
+
+body
+  #app-loader-3quilibrium
+  .dashboard-page
+  .dashboard-content
+  .content
+  #chat
+  span {
+  margin-left: 10px;
+}
+
+body #app-loader-3quilibrium .dashboard-page .dashboard-content .reminder {
+  margin-bottom: 20px;
+}
+
+body #app-loader-3quilibrium .dashboard-page .dashboard-content .reminder div {
+  margin-bottom: 10px;
+}
+
+body
+  #app-loader-3quilibrium
+  .dashboard-page
+  .dashboard-content
+  .reminder
+  .head {
+  display: flex;
+  justify-content: space-between;
+}
+
+body
+  #app-loader-3quilibrium
+  .dashboard-page
+  .dashboard-content
+  .reminder
+  .head
+  span {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+body
+  #app-loader-3quilibrium
+  .dashboard-page
+  .dashboard-content
+  .reminder
+  .options {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+body
+  #app-loader-3quilibrium
+  .dashboard-page
+  .dashboard-content
+  .reminder
+  .options
+  #date {
+  font-weight: bold;
+  display: flex;
+  align-items: flex-end;
+}
+
+body
+  #app-loader-3quilibrium
+  .dashboard-page
+  .dashboard-content
+  .reminder
+  .notes
+  .note {
+  display: flex;
+  justify-content: space-between;
+}
+
+body #app-loader-3quilibrium .dashboard-page .popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: #5559;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body #app-loader-3quilibrium .dashboard-page .popup .reminder {
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 2px #fff;
+}
+
+body #app-loader-3quilibrium .dashboard-page .popup .reminder input {
+  display: block;
+  padding: 5px 5px 5px 10px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+body #app-loader-3quilibrium .dashboard-page .popup .reminder button#exit {
+  float: right;
+}
+
+body #app-loader-3quilibrium .dashboard-page .popup .password {
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 2px #fff;
+}
+
+body #app-loader-3quilibrium .dashboard-page .popup .password input {
+  display: block;
+  padding: 5px 5px 5px 10px;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+body #app-loader-3quilibrium .dashboard-page .popup .password button#cancel {
+  float: right;
+}

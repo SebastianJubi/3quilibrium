@@ -38,7 +38,7 @@ const makeRequest = (reqUri, reqMethod, options = {}) => {
       return reject(err);
     }
   });
-}
+};
 
 //* Login Page */
 const verifyUser = () => {
@@ -50,9 +50,14 @@ const verifyUser = () => {
         if (response && response.status) {
           console.log("user logged in");
           if (
-            response.settings && response.settings.meditation &&
-            response.appUser && response.appUser.tags && typeof response.appUser.tags.lastMeditationTime === "number" &&
-            (response.appUser.tags.lastMeditationTime < +new Date().setHours(0, 0, 0, 0))) {
+            response.settings &&
+            response.settings.meditation &&
+            response.appUser &&
+            response.appUser.tags &&
+            typeof response.appUser.tags.lastMeditationTime === "number" &&
+            response.appUser.tags.lastMeditationTime <
+            +new Date().setHours(0, 0, 0, 0)
+          ) {
             location.href = "../peace-of-mind/";
           } else {
             window.username = response.appUser.username;
@@ -70,13 +75,13 @@ const verifyUser = () => {
   };
 
   const listenNotifications = () => {
-    let script = document.createElement('script');
+    let script = document.createElement("script");
     script.onload = function () {
       console.log("listening for notifications");
     };
     script.src = "../shared/scripts/socket.io.js";
     document.head.appendChild(script);
-  }
+  };
 
   verifySession();
 };
@@ -84,11 +89,17 @@ const verifyUser = () => {
 const chatApp = () => {
   const render = (usernames) => {
     document.getElementById("app-loader-3quilibrium").innerHTML = `
-        <section class="chat-page">
-            <header>
-                <button id="logout">Logout</button>
-                <h3>CHAT-APP</h3>
-            </header>
+        <header>
+          <div class="logo">
+            <img src="../shared/medias/innovaccer.png" />
+          </div>
+          <div class="options">
+            <button id="logout">Logout</button>
+          </div>
+        </header>
+        <section class="chat-page app-main">
+          <section class="chat-content">
+            <h3>CHAT-APP</h3>
             <section class="content">
               <div class="usernames">
                 ${usernames.map((user) => `<button class="user" data-id="${user}">${user}<span></span></button>`).join("")}
@@ -97,7 +108,11 @@ const chatApp = () => {
                 NO CHAT TO DISPLAY
               </div>
             </section>
-        </section>`;
+          </section>
+        </section>
+        <footer>
+          Powered by <span class="cologo"><img src="../shared/medias/3quilibrium.png" /></span>
+        </footer>`;
   };
 
   const getUsernames = () => {
@@ -113,21 +128,25 @@ const chatApp = () => {
       .catch((e) => {
         console.error(e);
       });
-  }
+  };
 
   const getMessages = (user) => {
-    makeRequest(`${BASE_URL}/chat/api/messages/${window.username}/${user}`, "GET")
+    makeRequest(
+      `${BASE_URL}/chat/api/messages/${window.username}/${user}`,
+      "GET"
+    )
       .then((response) => {
         if (response && response.status) {
           console.log("got usernames");
           $("#app-loader-3quilibrium .chat-page .content .message").html(`
             <div class="chats">
-              <pre>${JSON.stringify(response.data, null, 2)}</pre>
+              <pre>${JSON.stringify(response.data.length ? response.data.reverse() : `NO CHAT TO DISPLAY`, null, 2)}</pre>
             </div>
             <div class="input-box">
               <div><input type="text" id="sms" placeholder="Type your message..." autocomplete="off" /></div>
               <button id="send">Send</button>
             </div>`);
+          scroll();
         } else {
           console.log("FAILED getting usernames");
         }
@@ -135,17 +154,27 @@ const chatApp = () => {
       .catch((e) => {
         console.error(e);
       });
+  };
+
+  const scroll = () => {
+    let el = document.querySelector('body #app-loader-3quilibrium .chat-page .chat-content .content .message .chats');
+    el.scrollTop = el.scrollHeight;
   }
 
   window.sendChat = (data) => {
     if (data.from === document.toUser) {
-      $("#app-loader-3quilibrium .chat-page .content .message .chats").append(`<pre>${JSON.stringify(data, null, 2)}</pre>`);
+      $("#app-loader-3quilibrium .chat-page .content .message .chats").append(
+        `<pre>${JSON.stringify(data, null, 2)}</pre>`
+      );
+      scroll();
     } else {
-      let _countEl = $(`#app-loader-3quilibrium .chat-page .content .usernames .user[data-id='${data.from}'] span`);
+      let _countEl = $(
+        `#app-loader-3quilibrium .chat-page .content .usernames .user[data-id='${data.from}'] span`
+      );
       let _count = +(_countEl.text() || "0");
       _countEl.text(_count + 1);
     }
-  }
+  };
 
   getUsernames();
 
@@ -166,32 +195,66 @@ const chatApp = () => {
       });
   };
 
-  $(document).on("click", "#app-loader-3quilibrium .chat-page header #logout", () => {
+  $(document).on("click", "#app-loader-3quilibrium header .options #logout", () => {
     destroySession();
   });
 
-  $(document).on("click", "#app-loader-3quilibrium .chat-page .content .usernames .user", function (e) {
-    document.toUser = $(e.target).attr("data-id");
-    $(`#app-loader-3quilibrium .chat-page .content .usernames .user[data-id='${document.toUser}'] span`).text("")
-    getMessages(document.toUser);
-  });
+  $(document).on(
+    "click",
+    "#app-loader-3quilibrium .chat-page .content .usernames .user",
+    function (e) {
+      document.toUser = $(e.target).attr("data-id");
+      $(
+        `#app-loader-3quilibrium .chat-page .content .usernames .user[data-id='${document.toUser}'] span`
+      ).text("");
+      getMessages(document.toUser);
+    }
+  );
 
-  $(document).on("click", "#app-loader-3quilibrium .chat-page .content .message .input-box #send", () => {
-    let _msg = $("#app-loader-3quilibrium .chat-page .content .message .input-box div #sms").val().trim();
-    if (_msg) {
-      $("#app-loader-3quilibrium .chat-page .content .message .input-box div #sms").val("");
-      window.socketEmit("message", { from: window.username, to: document.toUser, message: _msg });
-      $("#app-loader-3quilibrium .chat-page .content .message .chats")
-        .append(
+  $(document).on(
+    "click",
+    "#app-loader-3quilibrium .chat-page .content .message .input-box #send",
+    () => {
+      let _msg = $(
+        "#app-loader-3quilibrium .chat-page .content .message .input-box div #sms"
+      )
+        .val()
+        .trim();
+      if (_msg) {
+        $(
+          "#app-loader-3quilibrium .chat-page .content .message .input-box div #sms"
+        ).val("");
+        window.socketEmit("message", {
+          from: window.username,
+          to: document.toUser,
+          message: _msg,
+        });
+        $("#app-loader-3quilibrium .chat-page .content .message .chats").append(
           `<pre>${JSON.stringify(
-            { from: window.username, to: document.toUser, message: _msg, timestamp: +new Date() }, null, 2
-          )}</pre>`);
+            {
+              from: window.username,
+              to: document.toUser,
+              message: _msg,
+              timestamp: +new Date(),
+            },
+            null,
+            2
+          )}</pre>`
+        );
+        scroll();
+      }
     }
-  });
+  );
 
-  $(document).on("keyup", "#app-loader-3quilibrium .chat-page .content .message .input-box div #sms", function (e) {
-    if (e.which === 13) {
-      $("#app-loader-3quilibrium .chat-page .content .message .input-box #send").click();
+  $(document).on(
+    "keyup",
+    "#app-loader-3quilibrium .chat-page .content .message .input-box div #sms",
+    function (e) {
+      if (e.which === 13) {
+        $(
+          "#app-loader-3quilibrium .chat-page .content .message .input-box #send"
+        ).click();
+      }
     }
-  });
-}
+  );
+};

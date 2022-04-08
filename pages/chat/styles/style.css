@@ -1,0 +1,107 @@
+button + button {
+  margin: 0;
+}
+
+body #app-loader-3quilibrium .chat-page .chat-content h3 {
+  font-size: 2em;
+}
+
+body #app-loader-3quilibrium .chat-page .chat-content .content {
+  padding-bottom: 20px;
+  height: 67vh;
+}
+
+body #app-loader-3quilibrium .chat-page .chat-content .content .usernames {
+  float: left;
+  width: 20%;
+  height: 100%;
+  padding-right: 15px;
+  overflow-y: scroll;
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .usernames
+  button {
+  padding: 10px 0;
+  display: block;
+  background: none;
+  color: #000;
+  width: 100%;
+  text-align: left;
+  border-radius: unset;
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .usernames
+  button
+  + button {
+  border-top: 1px solid #3a3a3a;
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .usernames
+  button
+  span {
+  margin-left: 10px;
+}
+
+body #app-loader-3quilibrium .chat-page .chat-content .content .message {
+  float: right;
+  width: 77%;
+  height: 100%;
+}
+
+body #app-loader-3quilibrium .chat-page .chat-content .content .message .chats {
+  height: 90%;
+  padding-right: 15px;
+  overflow-y: scroll;
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .message
+  .input-box {
+  height: 10%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .message
+  .input-box
+  div {
+  width: 85%;
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .message
+  .input-box
+  div
+  input {
+  width: 100%;
+  padding: 5px 5px 5px 10px;
+}

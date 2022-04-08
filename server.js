@@ -1,4 +1,5 @@
 "use strict";
+const fs = require("fs");
 const path = require("path");
 
 const ENV = process.argv[2] || process.env.NODE_ENV || "dev";
@@ -119,10 +120,95 @@ app.use("/meditation/api", isUserLoggedIn, meditationRouter);
 app.use("/music/api", isUserLoggedIn, musicRouter);
 app.use("/game/api", isUserLoggedIn, gameRouter);
 
+
 app.use("/", express.static(path.join(__dirname, "pages")));
 
 app.get("/", (req, res) => {
     return res.redirect("./login/");
+});
+
+app.get("/admin", (req, res) => {
+    const settings = JSON.parse(fs.readFileSync(`./models/settings.json`));
+    return res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+        <title>3QUILIBRIUM | Admin</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="./assets/scripts/loader.js" async defer></script>
+        <section id="app-loader-3quilibrium" class="app-loader-3quilibrium"
+            data-description="Maintaining balance between the 3 essentials - work, life and health"
+            data-logo="../shared/medias/innovaccer.png" data-cologo="../shared/medias/3quilibrium.png"
+            style="
+                --color-theme-button-primary: ${settings.color.button.primary};
+                --color-theme-button-secondary: ${settings.color.button.secondary};
+                --color-theme-text-primary: ${settings.color.text.primary};
+                --color-theme-text-secondary: ${settings.color.text.secondary};">
+        </section>
+    </body>
+    </html>
+    `);
+});
+
+app.get("/admin/:page", (req, res) => {
+    const settings = JSON.parse(fs.readFileSync(`./models/settings.json`));
+    return res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+        <title>3QUILIBRIUM | Admin</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="./scripts/loader.js" async defer></script>
+        <section id="app-loader-3quilibrium" class="app-loader-3quilibrium"
+            data-description="Maintaining balance between the 3 essentials - work, life and health"
+            data-logo="../../shared/medias/innovaccer.png" data-cologo="../../shared/medias/3quilibrium.png"
+            style="
+                --color-theme-button-primary: ${settings.color.button.primary};
+                --color-theme-button-secondary: ${settings.color.button.secondary};
+                --color-theme-text-primary: ${settings.color.text.primary};
+                --color-theme-text-secondary: ${settings.color.text.secondary};">
+        </section>
+    </body>
+    </html>
+    `);
+});
+
+app.get("/:page", (req, res) => {
+    const settings = JSON.parse(fs.readFileSync(`./models/settings.json`));
+    return res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+        <title>3QUILIBRIUM | ${req.params.page.toUpperCase()}</title>
+    </head>
+    <body>
+        <script type="text/javascript" src="./scripts/loader.js" async defer></script>
+        <section id="app-loader-3quilibrium" class="app-loader-3quilibrium"
+            data-description="Maintaining balance between the 3 essentials - work, life and health"
+            data-logo="../shared/medias/innovaccer.png" data-cologo="../shared/medias/3quilibrium.png"
+            style="
+                --color-theme-button-primary: ${settings.color.button.primary};
+                --color-theme-button-secondary: ${settings.color.button.secondary};
+                --color-theme-text-primary: ${settings.color.text.primary};
+                --color-theme-text-secondary: ${settings.color.text.secondary};">
+        </section>
+    </body>
+    </html>
+    `);
 });
 
 const server = app.listen(SETUP.port, SETUP.ip, () => {

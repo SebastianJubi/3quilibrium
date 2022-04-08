@@ -1,0 +1,19 @@
+body #app-loader-3quilibrium .music-page .contents {
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 5px;
+  padding-right: 15px;
+}
+
+body #app-loader-3quilibrium .music-page .contents .frame {
+  width: 100%;
+  height: 100%;
+}
+
+body #app-loader-3quilibrium .music-page .contents .frame iframe {
+  width: 100%;
+  height: 100%;
+}

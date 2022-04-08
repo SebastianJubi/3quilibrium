@@ -115,6 +115,7 @@ document.getElementById("app-loader-3quilibrium").innerHTML = `
 
 loadCss({
     font: "https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap",
+    frame: "../../shared/styles/style.css",
     style: "./styles/style.css",
 });
 

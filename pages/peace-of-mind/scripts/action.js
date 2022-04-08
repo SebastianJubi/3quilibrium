@@ -94,7 +94,7 @@ function onYouTubePlayerAPIReady() {
     width: "320",
     playerVars: {
       playsinline: 1,
-      controls: 1,
+      controls: 0,
       rel: 0,
     },
     videoId: `${url.split("/").pop()}`,
@@ -117,7 +117,7 @@ function onPlayerStateChange(event) {
             <section class="popup">
               <div class="content">
                 <div class="input">
-                  <input type="text" id="code" maxlength="4" />
+                  <input type="text" id="code" maxlength="4" size="4" placeholder="****" />
                 </div>
                 <button id="submit">SUBMIT</button>
                 <button id="restart">MEDITATE AGAIN</button>
@@ -134,7 +134,32 @@ function onPlayerStateChange(event) {
     );
     console.log({ duration, timer, code });
     setTimeout(() => {
-      console.log("trigger event", code);
+      player.pauseVideo();
+      let _count = 9;
+      let _sound = document.createElement('audio');
+      _sound.src = "../shared/medias/beep.mp3";
+      _sound.type = 'audio/mpeg';
+      $("body").append(`
+            <section class="popup">
+              <div class="content">
+                <span>YOUR CODE</span>
+                <h1>${code}</h1>
+              </div>
+            </section>`);
+      _sound.play();
+      let _interval = setInterval(() => {
+        if (_count) {
+          _count--;
+          $("body .popup").toggle();
+          if (_count % 2 === 1) {
+            _sound.play();
+          }
+        } else {
+          clearInterval(_interval);
+          $("body .popup").remove();
+          player.playVideo();
+        }
+      }, 1000);
     }, timer);
     $(document).on("click", "body .popup .content #submit", () => {
       let _code = $("body .popup .content .input #code").val().trim();

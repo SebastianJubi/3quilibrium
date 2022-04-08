@@ -38,7 +38,7 @@ const makeRequest = (reqUri, reqMethod, options = {}) => {
       return reject(err);
     }
   });
-}
+};
 
 //* Login Page */
 const verifyUser = async () => {
@@ -50,9 +50,14 @@ const verifyUser = async () => {
         if (response && response.status) {
           console.log("user logged in");
           if (
-            response.settings && response.settings.meditation &&
-            response.appUser && response.appUser.tags && typeof response.appUser.tags.lastMeditationTime === "number" &&
-            (response.appUser.tags.lastMeditationTime < +new Date().setHours(0, 0, 0, 0))) {
+            response.settings &&
+            response.settings.meditation &&
+            response.appUser &&
+            response.appUser.tags &&
+            typeof response.appUser.tags.lastMeditationTime === "number" &&
+            response.appUser.tags.lastMeditationTime <
+            +new Date().setHours(0, 0, 0, 0)
+          ) {
             location.href = "../peace-of-mind/";
           } else {
             window.username = response.appUser.username;
@@ -70,13 +75,13 @@ const verifyUser = async () => {
   };
 
   const listenNotifications = () => {
-    let script = document.createElement('script');
+    let script = document.createElement("script");
     script.onload = function () {
       console.log("listening for notifications");
     };
     script.src = "../shared/scripts/socket.io.js";
     document.head.appendChild(script);
-  }
+  };
 
   verifySession();
 };
@@ -84,7 +89,15 @@ const verifyUser = async () => {
 const game = () => {
   const render = (url) => {
     document.getElementById("app-loader-3quilibrium").innerHTML = `
-      <section class="game-page">
+      <header>
+        <div class="logo">
+          <img src="../shared/medias/innovaccer.png" />
+        </div>
+        <div class="options">
+          <button id="logout">Logout</button>
+        </div>
+      </header>
+      <section class="game-page app-main">
         <section class="contents">
           <div class="frame">
             <iframe title="Game" role="region"  class="PlayGame-iframe"
@@ -93,18 +106,11 @@ const game = () => {
             </iframe>
           </div>
         </section>
-      </section>`;
-
-    // ${
-    //   urls.slice(0, 1).map((url) => `
-    //       <div class="frame">
-    //         <iframe title="Game" role="region"  class="PlayGame-iframe"
-    //           aria-label="GameSnacks games are touch-based and focus on quick action. Tap to play."
-    //           src="${url}">
-    //         </iframe>
-    //       </div>`).join("")
-    // }
-  }
+      </section>
+      <footer>
+          Powered by <span class="cologo"><img src="../shared/medias/3quilibrium.png" /></span>
+      </footer>`;
+  };
 
   const getGameContent = () => {
     console.log("get games");
@@ -120,7 +126,7 @@ const game = () => {
       .catch((e) => {
         console.error(e);
       });
-  }
+  };
 
   window.sendChat = (data) => {
     $("#app-loader-3quilibrium").append(`
@@ -128,9 +134,30 @@ const game = () => {
           <div class="message">
             <pre>${JSON.stringify(data, null, 2)}</pre>
           </div>
-          <button onclick="$(this).parent().remove();">CLOSE</button>
+          <button onclick="$(this).parent().remove();">X</button>
         </section>`);
-  }
+  };
 
   getGameContent();
-}
+
+  //TODO: destroy session
+  const destroySession = () => {
+    console.log("destroy session");
+    makeRequest(`${BASE_URL}/user/api/logout`, "GET")
+      .then((response) => {
+        if (response && response.status) {
+          console.log("user logged out");
+          location.href = "../login/";
+        } else {
+          console.log("user NOT logged out");
+        }
+      })
+      .catch((e) => {
+        console.error(e);
+      });
+  };
+
+  $(document).on("click", "#app-loader-3quilibrium header .options #logout", () => {
+    destroySession();
+  });
+};

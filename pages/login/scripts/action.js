@@ -38,13 +38,18 @@ const makeRequest = (reqUri, reqMethod, options = {}) => {
       return reject(err);
     }
   });
-}
+};
 
 //* Login Page */
 const verifyUser = async () => {
   const render = () => {
     document.getElementById("app-loader-3quilibrium").innerHTML = `
-        <section class="login-page">
+        <header>
+          <div class="logo">
+            <img src="../shared/medias/innovaccer.png" />
+          </div>
+        </header>
+        <section class="login-page app-main">
             <div class="login-content">
                 <h3>Login</h3>
                 <div class="username">
@@ -55,7 +60,10 @@ const verifyUser = async () => {
                 </div>
                 <button id="login">Login</button>
             </div>
-        </section>`;
+        </section>
+        <footer>
+          Powered by <span class="cologo"><img src="../shared/medias/3quilibrium.png" /></span>
+        </footer>`;
   };
 
   //TODO: verify session
@@ -109,13 +117,17 @@ const verifyUser = async () => {
       .catch((e) => {
         console.error(e);
       });
-  }
+  };
 
   verifySession();
 
   $(document).on("click", "#app-loader-3quilibrium .login-page #login", () => {
-    let _username = $("#app-loader-3quilibrium .login-page #username").val().trim();
-    let _password = $("#app-loader-3quilibrium .login-page #password").val().trim();
+    let _username = $("#app-loader-3quilibrium .login-page #username")
+      .val()
+      .trim();
+    let _password = $("#app-loader-3quilibrium .login-page #password")
+      .val()
+      .trim();
     if (!_username) {
       return alert("Please provide username");
     }
@@ -123,7 +135,7 @@ const verifyUser = async () => {
       return alert("Please provide password");
     }
     if (_username && _password) {
-      verifyCreds({ username: _username, password: _password })
+      verifyCreds({ username: _username, password: _password });
     }
   });
 };

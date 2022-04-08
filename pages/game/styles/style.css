@@ -1,0 +1,14 @@
+body #app-loader-3quilibrium .game-page .contents {
+  width: 100%;
+  height: 100%;
+}
+
+body #app-loader-3quilibrium .game-page .contents .frame {
+  width: 100%;
+  height: 100%;
+}
+
+body #app-loader-3quilibrium .game-page .contents .frame iframe {
+  width: 100%;
+  height: 100%;
+}

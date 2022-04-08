@@ -1,0 +1,27 @@
+body #app-loader-3quilibrium .admin-page h3 {
+  font-size: 2em;
+  display: inline;
+}
+
+body #app-loader-3quilibrium .admin-page .content {
+  margin-bottom: 40px;
+}
+
+body #app-loader-3quilibrium .admin-page .content header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+body #app-loader-3quilibrium .admin-page .content .table {
+  width: 50%;
+  height: 67vh;
+  overflow-y: scroll;
+  margin: auto;
+}
+
+body #app-loader-3quilibrium .admin-page .content .table .user {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}

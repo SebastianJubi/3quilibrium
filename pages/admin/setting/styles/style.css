@@ -1,0 +1,42 @@
+body #app-loader-3quilibrium .admin-page h3 {
+  font-size: 2em;
+}
+
+body #app-loader-3quilibrium .admin-page .content {
+  margin-bottom: 40px;
+}
+
+body #app-loader-3quilibrium .admin-page .content .setting {
+  width: 50%;
+  height: 67vh;
+  overflow-y: scroll;
+  margin: auto;
+}
+
+body #app-loader-3quilibrium .admin-page .content .setting .row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+body #app-loader-3quilibrium .admin-page .content .setting .row .input {
+  width: 30%;
+  text-align: right;
+}
+
+body
+  #app-loader-3quilibrium
+  .admin-page
+  .content
+  .setting
+  .row
+  .input
+  input[type="time"] {
+  width: 100%;
+}
+
+body #app-loader-3quilibrium .admin-page .content .setting .options {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}

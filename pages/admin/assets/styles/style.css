@@ -1,0 +1,19 @@
+body #app-loader-3quilibrium .login-page {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+body #app-loader-3quilibrium .login-page .login-content h3 {
+  font-size: 2em;
+}
+
+body #app-loader-3quilibrium .login-page .login-content div {
+  margin-bottom: 20px;
+}
+
+body #app-loader-3quilibrium .login-page .login-content div input {
+  padding: 3px 5px;
+  font-size: 1em;
+}
