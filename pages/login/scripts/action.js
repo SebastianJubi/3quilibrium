@@ -46,7 +46,7 @@ const verifyUser = async () => {
     document.getElementById("app-loader-3quilibrium").innerHTML = `
         <header>
           <div class="logo">
-            <img src="../shared/medias/innovaccer.png" />
+            <img src="${$("#app-loader-3quilibrium").attr("data-logo") || "https://myhappynation.in/3quilibrium/shared/medias/innovaccer.png"}" />
           </div>
         </header>
         <section class="login-page app-main">

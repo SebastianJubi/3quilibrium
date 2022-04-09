@@ -25,14 +25,26 @@ body
   .chat-content
   .content
   .usernames
+  .user.selected {
+  font-weight: bolder;
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .usernames
   button {
   padding: 10px 0;
   display: block;
   background: none;
-  color: #000;
+  color: var(--color-theme-text-primary, #000);
   width: 100%;
   text-align: left;
+  border: 0;
   border-radius: unset;
+  text-transform: capitalize;
 }
 
 body
@@ -43,7 +55,7 @@ body
   .usernames
   button
   + button {
-  border-top: 1px solid #3a3a3a;
+  border-top: 1px solid var(--color-theme-button-primary, #555);
 }
 
 body
@@ -67,6 +79,74 @@ body #app-loader-3quilibrium .chat-page .chat-content .content .message .chats {
   height: 90%;
   padding-right: 15px;
   overflow-y: scroll;
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .message
+  .chats
+  .chat
+  + .chat {
+  margin: 10px 0;
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .message
+  .chats
+  .chat
+  .bubble {
+  width: max-content;
+  padding: 10px 20px;
+  background: var(--color-theme-button-primary, #555);
+  color: var(--color-theme-text-secondary, #fff);
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .message
+  .chats
+  .chat
+  .bubble.left {
+  text-align: left;
+  border-radius: 0 10px 10px 10px;
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .message
+  .chats
+  .chat
+  .bubble.right {
+  text-align: right;
+  border-radius: 10px 0 10px 10px;
+  margin: 0 0 0 auto;
+  filter: sepia(0.4);
+}
+
+body
+  #app-loader-3quilibrium
+  .chat-page
+  .chat-content
+  .content
+  .message
+  .chats
+  .chat
+  .bubble
+  .time {
+  font-size: 0.6em;
 }
 
 body

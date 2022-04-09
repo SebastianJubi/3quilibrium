@@ -61,6 +61,7 @@ const verifyUser = async () => {
             location.href = "../peace-of-mind/";
           } else {
             window.username = response.appUser.username;
+            window.settings = response.settings;
             listenNotifications();
             meditation();
           }
@@ -91,7 +92,7 @@ const meditation = () => {
     document.getElementById("app-loader-3quilibrium").innerHTML = `
       <header>
           <div class="logo">
-            <img src="../shared/medias/innovaccer.png" />
+            <img src="${$("#app-loader-3quilibrium").attr("data-logo") || "https://myhappynation.in/3quilibrium/shared/medias/innovaccer.png"}" />
           </div>
           <div class="options">
             <button id="logout">Logout</button>
@@ -136,10 +137,14 @@ const meditation = () => {
   window.sendChat = (data) => {
     $("#app-loader-3quilibrium").append(`
         <section class="popup">
-          <div class="message">
-            <pre>${JSON.stringify(data, null, 2)}</pre>
-          </div>
-          <button onclick="$(this).parent().remove();">X</button>
+            <div class="tile">
+                <div class="image"><img src="../shared/medias/chat.png" /></div>
+                <div class="text">
+                  <h4>New Message</h4>
+                  <span><b>${data.from}</b> : ${data.message.replace(/^sos:/i, "🆘")}</span>
+                </div>
+            </div>
+            <button onclick="$(this).parent().remove();sound.pause();sound.currentTime=0;">X</button>
         </section>`);
   };
 

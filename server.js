@@ -143,7 +143,7 @@ app.get("/admin", (req, res) => {
         <script type="text/javascript" src="./assets/scripts/loader.js" async defer></script>
         <section id="app-loader-3quilibrium" class="app-loader-3quilibrium"
             data-description="Maintaining balance between the 3 essentials - work, life and health"
-            data-logo="../shared/medias/innovaccer.png" data-cologo="../shared/medias/3quilibrium.png"
+            data-logo="${process.env.COMPANY_LOGO}" data-cologo="../shared/medias/3quilibrium.png"
             style="
                 --color-theme-button-primary: ${settings.color.button.primary};
                 --color-theme-button-secondary: ${settings.color.button.secondary};
@@ -171,7 +171,7 @@ app.get("/admin/:page", (req, res) => {
         <script type="text/javascript" src="./scripts/loader.js" async defer></script>
         <section id="app-loader-3quilibrium" class="app-loader-3quilibrium"
             data-description="Maintaining balance between the 3 essentials - work, life and health"
-            data-logo="../../shared/medias/innovaccer.png" data-cologo="../../shared/medias/3quilibrium.png"
+            data-logo="${process.env.COMPANY_LOGO}" data-cologo="../../shared/medias/3quilibrium.png"
             style="
                 --color-theme-button-primary: ${settings.color.button.primary};
                 --color-theme-button-secondary: ${settings.color.button.secondary};
@@ -199,7 +199,7 @@ app.get("/:page", (req, res) => {
         <script type="text/javascript" src="./scripts/loader.js" async defer></script>
         <section id="app-loader-3quilibrium" class="app-loader-3quilibrium"
             data-description="Maintaining balance between the 3 essentials - work, life and health"
-            data-logo="../shared/medias/innovaccer.png" data-cologo="../shared/medias/3quilibrium.png"
+            data-logo="${process.env.COMPANY_LOGO}" data-cologo="../shared/medias/3quilibrium.png"
             style="
                 --color-theme-button-primary: ${settings.color.button.primary};
                 --color-theme-button-secondary: ${settings.color.button.secondary};
@@ -221,3 +221,5 @@ global.io = new Server(server, {
     path: "/socket"
 });
 socketService.init();
+
+// ${document.getElementById("jubi-chat-loader-app").getAttribute("data-title")||""

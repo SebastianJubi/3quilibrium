@@ -39,7 +39,7 @@ officeEndJob.start();
 /* WATER BREAK */
 var waterBreakJob = new CronJob(`${officeMinStart} * * * *`, function () {
     console.log("water break conditions:", isOfficeTime(), !isLunchTime(), !isSnacksTime())
-    if (isOfficeTime() && !isLunchTime() && !isSnacksTime()) {
+    if (!isLunchTime() && !isSnacksTime()) {
         console.log('water break');
         socketService.emit("notify", { type: "broadcast", message: "water break" });
     }
@@ -94,7 +94,7 @@ let reminderJob = new CronJob(`* * * * *`, async function () {
     try {
         console.log("reminderCron");
         let reminders = await reminderDbService.getAllRemindersByOptions(
-            { time: new Date(+new Date().setSeconds(0, 0)) }
+            { time: +new Date().setSeconds(0, 0) }
         );
         console.log("reminders", reminders);
         if (reminders && reminders.length > 0) {
@@ -174,7 +174,8 @@ function isOfficeTime() {
     const officeTimeStart = new Date().setHours(officeHourStart, officeMinStart, 0, 0);
     const officeTimeEnd = new Date().setHours(officeHourEnd, officeMinEnd, 0, 0);
     const timeNow = +new Date();
-    return timeNow >= officeTimeStart && timeNow < officeTimeEnd;
+    console.log("isOfficeTime before return", timeNow, officeTimeStart, officeTimeEnd);
+    return timeNow > officeTimeStart && timeNow < officeTimeEnd;
 }
 
 function getCurrentSettings() {

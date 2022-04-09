@@ -5,3 +5,17 @@ body #app-loader-3quilibrium .admin-page h3 {
 body #app-loader-3quilibrium .admin-page .content {
   margin-bottom: 40px;
 }
+
+body #app-loader-3quilibrium .admin-page .content .menu {
+  display: flex;
+}
+
+body #app-loader-3quilibrium .admin-page .content .menu button {
+  width: 125px;
+  height: 75px;
+  border-radius: 10px;
+}
+
+body #app-loader-3quilibrium .admin-page .content .menu button:hover svg {
+  fill: var(--color-theme-button-primary, #555);
+}

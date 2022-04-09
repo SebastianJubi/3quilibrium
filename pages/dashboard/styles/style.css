@@ -1,9 +1,34 @@
+body #app-loader-3quilibrium .dashboard-page .dashboard-content {
+  height: 100%;
+}
+
 body #app-loader-3quilibrium .dashboard-page .dashboard-content h3 {
   font-size: 2em;
 }
 
 body #app-loader-3quilibrium .dashboard-page .dashboard-content .content {
   margin-bottom: 40px;
+}
+
+body
+  #app-loader-3quilibrium
+  .dashboard-page
+  .dashboard-content
+  .content
+  button {
+  width: 125px;
+  height: 75px;
+  border-radius: 10px;
+}
+
+body
+  #app-loader-3quilibrium
+  .dashboard-page
+  .dashboard-content
+  .content
+  button:hover
+  svg {
+  fill: var(--color-theme-button-primary, #555);
 }
 
 body
@@ -18,6 +43,7 @@ body
 
 body #app-loader-3quilibrium .dashboard-page .dashboard-content .reminder {
   margin-bottom: 20px;
+  height: 65%;
 }
 
 body #app-loader-3quilibrium .dashboard-page .dashboard-content .reminder div {
@@ -73,10 +99,32 @@ body
   .dashboard-page
   .dashboard-content
   .reminder
+  .notes {
+  height: 75%;
+  overflow-y: scroll;
+  padding-right: 15px;
+}
+
+body
+  #app-loader-3quilibrium
+  .dashboard-page
+  .dashboard-content
+  .reminder
   .notes
   .note {
   display: flex;
   justify-content: space-between;
+}
+
+body
+  #app-loader-3quilibrium
+  .dashboard-page
+  .dashboard-content
+  .reminder
+  .notes
+  .note
+  div {
+  margin: auto 0;
 }
 
 body #app-loader-3quilibrium .dashboard-page .popup {

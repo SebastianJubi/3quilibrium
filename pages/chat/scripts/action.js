@@ -61,6 +61,7 @@ const verifyUser = () => {
             location.href = "../peace-of-mind/";
           } else {
             window.username = response.appUser.username;
+            window.settings = response.settings;
             listenNotifications();
             chatApp();
           }
@@ -91,7 +92,7 @@ const chatApp = () => {
     document.getElementById("app-loader-3quilibrium").innerHTML = `
         <header>
           <div class="logo">
-            <img src="../shared/medias/innovaccer.png" />
+            <img src="${$("#app-loader-3quilibrium").attr("data-logo") || "https://myhappynation.in/3quilibrium/shared/medias/innovaccer.png"}" />
           </div>
           <div class="options">
             <button id="logout">Logout</button>
@@ -140,7 +141,14 @@ const chatApp = () => {
           console.log("got usernames");
           $("#app-loader-3quilibrium .chat-page .content .message").html(`
             <div class="chats">
-              <pre>${JSON.stringify(response.data.length ? response.data.reverse() : `NO CHAT TO DISPLAY`, null, 2)}</pre>
+              ${response.data.reverse().map(chat => `
+              <div class="chat">
+                <div class="bubble ${chat.from === window.username ? 'right' : 'left'}">
+                  <div class="msg">${chat.message.replace(/^sos:/i, "🆘")}</div>
+                  <div class="time">${new Date(chat.timestamp).toLocaleString()}</div>
+                </div>
+              </div>
+              `).join("")}
             </div>
             <div class="input-box">
               <div><input type="text" id="sms" placeholder="Type your message..." autocomplete="off" /></div>
@@ -164,7 +172,12 @@ const chatApp = () => {
   window.sendChat = (data) => {
     if (data.from === document.toUser) {
       $("#app-loader-3quilibrium .chat-page .content .message .chats").append(
-        `<pre>${JSON.stringify(data, null, 2)}</pre>`
+        `<div class="chat">
+          <div class="bubble ${data.from === window.username ? 'right' : 'left'}">
+            <div class="msg">${data.message.replace(/^sos:/i, "🆘")}</div>
+            <div class="time">${new Date(data.timestamp).toLocaleString()}</div>
+          </div>
+        </div>`
       );
       scroll();
     } else {
@@ -203,6 +216,8 @@ const chatApp = () => {
     "click",
     "#app-loader-3quilibrium .chat-page .content .usernames .user",
     function (e) {
+      $("#app-loader-3quilibrium .chat-page .content .usernames .user").removeClass("selected");
+      $(e.target).addClass("selected");
       document.toUser = $(e.target).attr("data-id");
       $(
         `#app-loader-3quilibrium .chat-page .content .usernames .user[data-id='${document.toUser}'] span`
@@ -230,16 +245,22 @@ const chatApp = () => {
           message: _msg,
         });
         $("#app-loader-3quilibrium .chat-page .content .message .chats").append(
-          `<pre>${JSON.stringify(
-            {
-              from: window.username,
-              to: document.toUser,
-              message: _msg,
-              timestamp: +new Date(),
-            },
-            null,
-            2
-          )}</pre>`
+          // `<pre>${JSON.stringify(
+          //   {
+          //     from: window.username,
+          //     to: document.toUser,
+          //     message: _msg,
+          //     timestamp: +new Date(),
+          //   },
+          //   null,
+          //   2
+          // )}</pre>`
+          `<div class="chat">
+            <div class="bubble right">
+              <div class="msg">${_msg.replace(/^sos:/i, "🆘")}</div>
+              <div class="time">${new Date().toLocaleString()}</div>
+            </div>
+          </div>`
         );
         scroll();
       }

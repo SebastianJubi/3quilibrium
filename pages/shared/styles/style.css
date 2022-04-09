@@ -21,7 +21,7 @@ img {
 button {
   background: var(--color-theme-button-primary, #555);
   color: var(--color-theme-text-secondary, #fff);
-  border: 0;
+  border: 2px solid var(--color-theme-button-primary, #555);
   padding: 8px 16px;
   border-radius: 50px;
   height: fit-content;
@@ -29,7 +29,8 @@ button {
 }
 
 button:hover {
-  background: var(--color-theme-button-secondary, #000);
+  background: var(--color-theme-text-secondary, #fff);
+  color: var(--color-theme-button-primary, #555);
 }
 
 button + button {
@@ -68,6 +69,8 @@ body > #app-loader-3quilibrium > footer {
   justify-content: center;
   align-items: center;
   font-size: 1.3em;
+  box-shadow: 0px 0px 8px #cecece;
+  color: #000;
 }
 
 body > #app-loader-3quilibrium > footer > .cologo {
@@ -103,6 +106,25 @@ body > #app-loader-3quilibrium > .popup {
   color: var(--color-theme-text-secondary, #fff);
   border-radius: 10px;
   box-shadow: 2px 3px 6px #000;
+  max-width: 350px;
+}
+
+body > #app-loader-3quilibrium > .popup > .tile {
+  display: flex;
+}
+
+body > #app-loader-3quilibrium > .popup > .tile > .image {
+  width: 50px;
+  height: 50px;
+}
+
+body > #app-loader-3quilibrium > .popup > .tile > .text {
+  margin-left: 10px;
+}
+
+body > #app-loader-3quilibrium > .popup > .tile > .text > h4 {
+  margin: 0 0 10px;
+  font-size: 1.2em;
 }
 
 body > #app-loader-3quilibrium > .popup > button {
@@ -119,11 +141,7 @@ body > #app-loader-3quilibrium > .popup > button {
   font-weight: bolder;
 }
 
-/*
-<section class="popup">
-  <div class="message">
-    <pre>{ "type": "broadcast", "message": "work break" }</pre>
-  </div>
-  <button onclick="$(this).parent().remove();sound.pause();sound.currentTime=0;">X</button>
-</section>
- */
+body > #app-loader-3quilibrium > .popup > button:hover {
+  background: var(--color-theme-button-primary, #555);
+  color: var(--color-theme-text-secondary, #fff);
+}
