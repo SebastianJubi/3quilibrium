@@ -43,7 +43,6 @@ module.exports = {
     getAppuserByOptions: (options) => {
         return new Promise((resolve, reject) => {
             try {
-                console.log("find" + options);
                 Appuser.find(options)
                     .lean()
                     .exec((err, data) => {

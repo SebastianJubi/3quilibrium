@@ -222,4 +222,56 @@ global.io = new Server(server, {
 });
 socketService.init();
 
-// ${document.getElementById("jubi-chat-loader-app").getAttribute("data-title")||""
+app.get("/broadcast/:type", (req, res) => {
+    try {
+        console.log("/socket called");
+        switch (req.params.type) {
+            case "officeStart":
+                socketService.emit("notify", { type: "broadcast", message: "office start" });
+                break;
+            case "officeEnd":
+                socketService.emit("notify", { type: "broadcast", message: "office end" });
+                break;
+            case "water":
+                socketService.emit("notify", { type: "broadcast", message: "water break" });
+                break;
+            case "break":
+                socketService.emit("notify", { type: "broadcast", message: "work break" });
+                break;
+            case "work":
+                socketService.emit("notify", { type: "broadcast", message: "work resume" });
+                break;
+            case "reminder":
+                socketService.emit("notify", {
+                    type: "reminder", message: "reminder received", data: {
+                        "_id": "625145c39fbcdac38d0358ab",
+                        "username": "sebastian",
+                        "message": "Reminder Demo",
+                        "time": "2022-04-09T08:38:00.000Z",
+                        "timestamp": 1649492883934,
+                        "__v": 0
+                    }
+                });
+                break;
+            case "lunchStart":
+                socketService.emit("notify", { type: "broadcast", message: "lunch break start" });
+                break;
+            case "lunchEnd":
+                socketService.emit("notify", { type: "broadcast", message: "lunch break end" });
+                break;
+            case "snackStart":
+                socketService.emit("notify", { type: "broadcast", message: "snacks break start" });
+                break;
+            case "snackEnd":
+                socketService.emit("notify", { type: "broadcast", message: "snacks break end" });
+                break;
+        }
+        return res
+            .status(200)
+            .send({ status: true, message: "ok", appUser: req.session.appUser });
+
+    } catch (e) {
+        console.log(e);
+        return res.status(500).send(e);
+    }
+});

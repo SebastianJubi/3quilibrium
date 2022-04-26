@@ -169,7 +169,7 @@ router.get("/settings", isAdminLoggedIn, async (req, res) => {
 
 router.patch("/settings", isAdminLoggedIn, async (req, res) => {
     try {
-        if (req.body && req.body.office && req.body.lunch && req.body.snacks && req.body.color && req.body.meditation) {
+        if (req.body && req.body.office && req.body.lunch && req.body.snacks && req.body.color && 'meditation' in req.body) {
             const settings = req.body;
             fs.writeFileSync(
                 `./models/settings.json`,
